@@ -1,0 +1,4 @@
+# Ignorar o arquivo de conexão com o banco de dados
+/jogo da velha.exe
+/testes.cpp
+/testes.exe
