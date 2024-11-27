@@ -46,6 +46,13 @@ int main(){
 //				getchar();
 				switch (contra){
 					case 'p':
+						//Reiniciando a matriz (criar uma função para isso depois)
+						for (int i = 0; i < 3; i++) {
+					        for (int j = 0; j < 3; j++) {
+					            matriz[i][j] = ' ';
+					        }
+					    }
+					    vencedor = 0;
 						//Pegando os nomes dos jogadores:
 						printf("Digite o nome do 1º jogador (X):\n");
 						scanf("%s", jogador1);
@@ -53,15 +60,20 @@ int main(){
 						scanf("%s", jogador2);
 						
 						do{ //Laço de repetição que só finaliza quando tiver um vencedor
+							printf("É a vez do jogador %c\n", simbolo);
 							printf("Digite a posição na qual deseja jogar (ex: 0 2 [linha e coluna])");
 							scanf("%d %d", &jogada_Linha, &jogada_Coluna);
 							getchar();
-							matriz[jogada_Linha][jogada_Coluna] = simbolo;
-							if(simbolo == 'X'){
-								simbolo = 'O';
+							if(matriz[jogada_Linha][jogada_Coluna] != ' '){
+								printf("Este local já está preenchido, tente novamente!\n");
+								printf("---------------------------------\n");
 							} else{
-								simbolo = 'X';
-							}
+								matriz[jogada_Linha][jogada_Coluna] = simbolo;
+								if(simbolo == 'X'){
+									simbolo = 'O';
+								} else{
+									simbolo = 'X';
+								}
 								for(int i = 0; i < 3; i++){
 									for(int j = 0; j < 3; j++){
 										if (matriz[i][j] == ' '){
@@ -72,7 +84,8 @@ int main(){
 									}
 									printf("\n\n");
 								}
-								
+							}
+							
 							// Verifica linhas e colunas caso o jogador 1 tenha vencido
 						    for (int i = 0; i < 3; i++) {
 						        if (matriz[i][0] == matriz[i][1] && matriz[i][1] == matriz[i][2] && matriz[i][0] != ' ') {
