@@ -1,8 +1,10 @@
-//Jogo da velha de Wálisson:
+//Jogo da velha:
 
 #include <stdio.h>
 #include <locale.h>
 #include <string.h>
+#include <stdlib.h>
+#include <time.h>
 
 	//Tutorial de como funciona uma matriz 3x3:
 //	for(int i = 0; i < 3; i++){
@@ -26,6 +28,8 @@ int main(){
 	char jogador2[50] = " ";
 	char continuar = 's';
 	char simbolo = 'X';
+	srand(time(NULL));
+	
 	printf("Seja bem-vindo ao jogo da velha!\n");
 	printf("---------------------------------\n");
 	for(int i = 0; i < 3; i++){
@@ -72,7 +76,7 @@ int main(){
 							scanf("%d %d", &jogada_Linha, &jogada_Coluna);
 							getchar();
 							if(matriz[jogada_Linha][jogada_Coluna] != ' '){
-								printf("Este local já está preenchido, tente novamente!\n");
+								printf("Jogada inválida, tente novamente!\n");
 								printf("---------------------------------\n");
 							} else{
 								matriz[jogada_Linha][jogada_Coluna] = simbolo;
@@ -154,6 +158,109 @@ int main(){
 						//OPÇÃO DE JOGAR CONTRA A MÁQUINA (CPU)
 						printf("Digite o seu nome, jogador:\n");
 						scanf("%s", jogador1);
+						strcpy(jogador2, "Máquina");
+						for (int i = 0; i < 3; i++) {
+					        for (int j = 0; j < 3; j++) {
+					            matriz[i][j] = ' ';
+					        }
+					    }
+						do{
+							printf("É a vez do jogador %c\n", simbolo);
+							printf("Digite a posição na qual deseja jogar (ex: 0 2 [linha e coluna])");
+							scanf("%d %d", &jogada_Linha, &jogada_Coluna);
+							getchar();
+							if(matriz[jogada_Linha][jogada_Coluna] != ' '){
+								printf("Este local já está preenchido, tente novamente!\n");
+								printf("---------------------------------\n");
+							} else{
+								matriz[jogada_Linha][jogada_Coluna] = simbolo;
+								for(int i = 0; i < 3; i++){
+									for(int j = 0; j < 3; j++){
+										if (matriz[i][j] == ' '){
+											printf("\t*");
+										}else{
+											printf("\t%c", matriz[i][j]);
+										}
+									}
+									printf("\n\n");
+								}
+							}
+							
+							// Verifica linhas e colunas caso o jogador 1 tenha vencido
+						    for (int i = 0; i < 3; i++) {
+						        if (matriz[i][0] == matriz[i][1] && matriz[i][1] == matriz[i][2] && matriz[i][0] != ' ') {
+						             // Linha completa
+						            if(matriz[i][0] == 'X'){
+						            	vencedor = 1;
+						            	placarA++;
+									}else if(matriz[i][0] == 'O'){
+										vencedor = 2;
+										placarB++;
+									}else{
+										vencedor = 4;
+									}
+						            
+						        }
+						        if (matriz[0][i] == matriz[1][i] && matriz[1][i] == matriz[2][i] && matriz[0][i] != ' ') {
+						            // Coluna completa
+						            if(matriz[0][i] == 'X'){
+						            	vencedor = 1;
+						            	placarA++;
+									}else if(matriz[0][i] == 'O'){
+										vencedor = 2;
+										placarB++;
+									}else{
+										vencedor = 4;
+									}
+						        }
+						    }
+						
+						    // Verifica diagonais
+						    if (matriz[0][0] == matriz[1][1] && matriz[1][1] == matriz[2][2] && matriz[0][0] != ' ') {
+						        // Diagonal principal
+						        if(matriz[0][0] == 'X'){
+						        	vencedor = 1;
+						        	placarA++;
+								}else if(matriz[0][0] == 'O'){
+									vencedor = 2;
+									placarB++;
+								}else{
+									vencedor = 4;
+								}
+						    }
+						    if (matriz[0][2] == matriz[1][1] && matriz[1][1] == matriz[2][0] && matriz[0][2] != ' ') {
+						        // Diagonal secundária
+						        if(matriz[0][2] == 'X'){
+						        	vencedor = 1;
+						        	placarA++;
+								}else if(matriz[0][2] == 'O'){
+									vencedor = 2;
+									placarB++;
+								}else{
+									vencedor = 4;
+								}
+						    }
+						    if(vencedor == 0){
+						    	//JOGADA DA MÁQUINA
+								do {
+							        jogada_Linha = rand() % 3;  // Gera número entre 0 e 2
+							        jogada_Coluna = rand() % 3;
+							    } while (matriz[jogada_Linha][jogada_Coluna] != ' '); // Repete até encontrar um espaço vazio
+								matriz[jogada_Linha][jogada_Coluna] = 'O'; // Máquina joga 'O'
+								printf("A máquina jogou %d %d\n", jogada_Linha, jogada_Coluna);
+								for(int i = 0; i < 3; i++){
+									for(int j = 0; j < 3; j++){
+										if (matriz[i][j] == ' '){
+											printf("\t*");
+										}else{
+											printf("\t%c", matriz[i][j]);
+										}
+									}
+									printf("\n\n");
+								}
+							}
+						} while (vencedor == 0);
+						
 						break;
 					default:
 						printf("Valor inválido!\n");
