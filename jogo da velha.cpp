@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <locale.h>
+#include <string.h>
 
 	//Tutorial de como funciona uma matriz 3x3:
 //	for(int i = 0; i < 3; i++){
@@ -19,16 +20,18 @@ int main(){
 		{' ', ' ', ' '}
 	};
 	
-	int jogada_Linha, jogada_Coluna, placarA, placarB, vencedor = 0;
-	char jogador1[50], jogador2[50], contra, opcao;
+	int jogada_Linha, jogada_Coluna, placarA, placarB = 0, vencedor = 0;
+	char contra, opcao;
+	char jogador1[50] = " ";
+	char jogador2[50] = " ";
 	char continuar = 's';
 	char simbolo = 'X';
-	
 	printf("Seja bem-vindo ao jogo da velha!\n");
 	printf("---------------------------------\n");
 	for(int i = 0; i < 3; i++){
+//		printf("%d", i); //colunas
 		for(int j = 0; j < 3; j++){
-			printf("\t*", i, j);
+			printf("\t*");
 		}
 		printf("\n\n");
 	}
@@ -46,6 +49,7 @@ int main(){
 //				getchar();
 				switch (contra){
 					case 'p':
+						//OPÇÃO DE JOGAR CONTRA OUTRO JOGADOR
 						//Reiniciando a matriz (criar uma função para isso depois)
 						for (int i = 0; i < 3; i++) {
 					        for (int j = 0; j < 3; j++) {
@@ -53,11 +57,14 @@ int main(){
 					        }
 					    }
 					    vencedor = 0;
-						//Pegando os nomes dos jogadores:
-						printf("Digite o nome do 1º jogador (X):\n");
-						scanf("%s", jogador1);
-						printf("Digite o nome do 2º jogador: (O)\n");
-						scanf("%s", jogador2);
+						
+						if(strcmp(jogador1, " ") == 0 && strcmp(jogador2, " ") == 0){
+							//Pegando os nomes dos jogadores:
+							printf("Digite o nome do 1º jogador (X):\n");
+							scanf("%s", jogador1);
+							printf("Digite o nome do 2º jogador: (O)\n");
+							scanf("%s", jogador2);
+						}
 						
 						do{ //Laço de repetição que só finaliza quando tiver um vencedor
 							printf("É a vez do jogador %c\n", simbolo);
@@ -92,8 +99,10 @@ int main(){
 						             // Linha completa
 						            if(matriz[i][0] == 'X'){
 						            	vencedor = 1;
+						            	placarA++;
 									}else if(matriz[i][0] == 'O'){
 										vencedor = 2;
+										placarB++;
 									}else{
 										vencedor = 4;
 									}
@@ -103,8 +112,10 @@ int main(){
 						            // Coluna completa
 						            if(matriz[0][i] == 'X'){
 						            	vencedor = 1;
+						            	placarA++;
 									}else if(matriz[0][i] == 'O'){
 										vencedor = 2;
+										placarB++;
 									}else{
 										vencedor = 4;
 									}
@@ -140,6 +151,7 @@ int main(){
 						} while (vencedor == 0);
 						break;
 					case 'm':
+						//OPÇÃO DE JOGAR CONTRA A MÁQUINA (CPU)
 						printf("Digite o seu nome, jogador:\n");
 						scanf("%s", jogador1);
 						break;
@@ -149,10 +161,31 @@ int main(){
 				break;
 			case 2:
 				//OPCÇÃO DE VER RANKING
-				//USAR AS VARIÁVEIS: placarA e placarB para mostrar a pontuação
+				printf("---------------------------------\n");
+				printf("\t   Ranking:\n");
+				printf("---------------------------------\n");
+				if(strcmp(jogador1, " ") == 0){
+					printf("Você ainda não jogou nenhuma partida\n\n");
+					continue;
+				} else if (strcmp(jogador2, " ") == 0 && strcmp(jogador1, " ") != 0){
+					printf("%s: %d pontos\n", jogador1, placarA);
+				} else{
+					printf("%s: %d pontos\n", jogador1, placarA);
+					printf("%s: %d pontos\n", jogador2, placarB);
+				}
 				break;
 			case 3:
 				//OPÇÃO DE CRÉDITOS
+				    printf("===========================================\n");
+				    printf("               DESENVOLVEDORES              \n");
+				    printf("===========================================\n");
+				    printf("               Wálisson Andrey             \n");
+				    printf("               Gabriel Albino              \n");
+				    printf("               Samuel David                \n");
+				    printf("               Victor Gabriel              \n");
+				    printf("===========================================\n");
+				    printf("         Obrigado por jogar nosso jogo!     \n");
+				    printf("===========================================\n");
 				break;
 			case 4:
 				//OPÇÃO DE SAIR
@@ -163,8 +196,7 @@ int main(){
 				printf("Digite uma opção válida");
 		}
 			
-		getchar();
-		
+//		getchar();
 		
 		switch (vencedor){
 		case 1:
