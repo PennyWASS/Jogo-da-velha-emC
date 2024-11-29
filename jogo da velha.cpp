@@ -289,4 +289,10 @@ int main(){
 		scanf("%c", &continuar);
 		
 	} while (continuar == 's' || continuar == 'S');
+	
+	// Liberar memória alocada para a matriz
+	    for (int i = 0; i < 3; i++) {
+	        free(matriz[i]);
+	    }
+	    free(matriz);
 }
